@@ -1,6 +1,7 @@
 # Circle-Square Collision Test in 2D
 
 The circle square collision test is actually relatively simple to compute. Let's start with an axis aligned square. With an axis aligned square, it's easy. We just have to project the center of the circle onto the surface of the square. We can do this by computing the vector between the center of the circle, and the center of the square. We then clamp the x and y components of this vector to be within the square.
+
 ![](images/collision/circle-square-2d/ProjectionExample.PNG)
 
 In the above example, the black line represents the vector from the square to the circle. The vector's t component is within the height of the square, however the x component is much greater than the right most wall of the square. Therefore we clamp the x value, and the resulting vector is shown in red.
@@ -55,6 +56,7 @@ We use an EPS value to help prevent odd interactions with floating point error. 
 Next we'll want to extract some information about the collision for our solver. Depending on whether or not we're using discrete or continuous collision, here's some values we may want.
 
 The minimum translation vector is the vector the circle must be moved to resolve the collision. Now depending on the mass of the two bodies, this vector may be split between the two. But for now we only need to think about the circle. We can compute this very easily, It's simply the delta vector, with length `circle.radius - delta.magnitude`. This is because part of the circle is penetrating and we're interested in the part that's not outside the circle.
+
 ![](images/collision/circle-square-2d/MinimumTranslationExample.PNG)
 
 The red line above represents the delta vector, the blue line is what our minimum translation vector is. Notice how the sum of those two lengths is the radius? And they're both in the direction of our delta vector? So our final formula is
@@ -92,6 +94,7 @@ localCircle.position.y = sn * relativeCircle.position.x + cs * relativeCircle.po
 Now just use everything we had before, except with the localCircle. This can be made much more memory efficient, but i'll leave that up to you. I wrote it the way i did to make the core concepts more understandable. Not necessarily to be the most efficient.
 
 Here's what the unity example looks like, showing you the local position of the objects in grey, the delta vector and translation point also in grey, and the mtv in blue.
+
 ![](images/collision/circle-square-2d/FinalExample1.PNG)
 ![](images/collision/circle-square-2d/FinalExample2.PNG)
 
@@ -105,6 +108,7 @@ inside &= localCircle.position.y < square.height / 2;
 inside &= localCircle.position.y > -square.height / 2;
 ```
 If we're inside, just compute the distance to each wall of the square, and pick the shortest distance. Your delta now becomes that closest point. I won't write code for this, as it's just a bunch of if statements. But here's a visual example:
+
 ![](images/collision/circle-square-2d/InsideExample.PNG)
 
 The blue line is once again your mtv. This is now your delta vector + the size of the radius so it leaves the square completely.
