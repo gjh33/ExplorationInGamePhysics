@@ -4,7 +4,7 @@ The circle square collision test is actually relatively simple to compute. Let's
 
 ![](images/collision/circle-square-2d/ProjectionExample.PNG)
 
-In the above example, the black line represents the vector from the square to the circle. The vector's t component is within the height of the square, however the x component is much greater than the right most wall of the square. Therefore we clamp the x value, and the resulting vector is shown in red.
+In the above example, the black line represents the vector from the square to the circle. The vector's y component is within the height of the square, however the x component is much greater than the right most wall of the square. Therefore we clamp the x value, and the resulting vector is shown in red.
 
 This works for any angle, and those familiar with projection will be familiar with the clamping method. So now we have the projected point on the square, which is by definition the closest point on the square to the circle's center. From here it's trivial to find the distance function. Simply find the length of the vector from the projected point to the circle's center, then subtract the circle's radius. If the distance is less than 0 then we are colliding! Now let's try putting this into code! We'll come back to the case of a non axis aligned box in a moment. We're also going to assume for simplicity that this box is at the origin.
 
